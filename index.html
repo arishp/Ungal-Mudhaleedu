@@ -1,10 +1,170 @@
+<!DOCTYPE html>
 <html>
     <head>
-        <title>Ungal Mudhaleedu</title>
+        <title>Vaniga Valai</title>
     </head>
     <body>
-        <script src="react-file.js"></script>
-        <h1>Welcome to Ungal Mudhaleedu</h1>
-        <p>This is a sample HTML file.</p>
+        <div class="js-container"></div>
+        <script src="https://unpkg.com/supersimpledev/react.js"></script>
+        <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+        <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+        <script type="text/babel">
+
+            function Logo({logo_content}){
+                return(
+                    <>{logo_content}</>
+                );
+            }
+
+            function NavigationMenu({navi_content}){
+                return(
+                    <>{navi_content}</>
+                );
+            }
+
+            function Header(){
+                return(
+                    <div>
+                        <Logo logo_content="Vaniga Valai Logo"/>
+                        <NavigationMenu navi_content="Home | About | Services | Contact"/>
+                    </div>
+                );
+            }    
+            
+            function BusinessNewsItem({item}){
+                return(
+                    <div>
+                        {item}
+                    </div>
+                );
+            }
+
+            function BusinessNewsItems(){
+                const businessNewsItems = [
+                    {item: "Business News Item 1", id:"id1"},
+                    {item: "Business News Item 2", id:"id2"},
+                ]
+                return(
+                    <>
+                    {
+                        businessNewsItems.map(
+                            (businessNewsItem) =>
+                            <BusinessNewsItem item={businessNewsItem.item} key={businessNewsItem.id}/>
+                        )
+                    }
+                    </>
+                );
+            }
+
+            function BusinessNewsFeed(){
+                return(
+                    <>
+                        <BusinessNewsItems/>
+                        <button>Refresh</button>
+                    </>
+                );
+            }
+
+            function ChatInput({chatResponses, setChatResponses}){
+
+                const [inputText, setInputText] = React.useState("");
+
+                function saveInputChange(event){
+                    setInputText(event.target.value);
+                }
+
+                function sendResponse(){
+                    const updatedChatResponses = 
+                        [
+                            ...chatResponses,
+                            {sender: "user", response: inputText, id: crypto.randomUUID()}
+                        ]
+                    setChatResponses(updatedChatResponses);
+                    setInputText("");
+                }
+                return(
+                    <>
+                        <input 
+                        onChange={saveInputChange} 
+                        placeholder="Enter your query" 
+                        value={inputText}
+                        size="30"/>
+                        <button onClick={sendResponse}>Send</button>
+                    </>
+                );
+            }
+
+            function ChatResponse({sender, message}){
+                return(
+                    <div>
+                        {sender}:{message}
+                    </div>
+                );
+            }
+
+            function ChatResponses({chatResponses}){
+                return(
+                    <>
+                        {
+                            chatResponses.map(
+                                (chatResponse) => 
+                                <ChatResponse 
+                                sender={chatResponse.sender} 
+                                message={chatResponse.response}
+                                key={chatResponse.id}/>
+                            )
+                        }
+                    </>
+                );
+            }
+
+            function Chatbot(){
+                const [chatResponses, setChatResponses] = React.useState(
+                    [
+                        {sender: "robot", response: "Hello Chatbot...", id:crypto.randomUUID()}
+                    ]
+                );
+                return(
+                    <div>
+                        <ChatInput
+                         chatResponses={chatResponses} 
+                         setChatResponses={setChatResponses} />
+                        <ChatResponses
+                         chatResponses={chatResponses}/>
+                    </div>
+                );
+            }
+
+            function MainContent(){
+                return(
+                    <div>
+                        <BusinessNewsFeed content="Business News Feed Content..."/>
+                        <Chatbot/>
+                    </div>
+                );
+            }
+
+
+            function App(){
+                return(
+                    <>
+                        <Header/>
+                        <MainContent/>
+                    </>
+                );
+            }
+
+            const container = document.querySelector('.js-container');
+            ReactDOM.createRoot(container).render(<App/>);
+        </script>
     </body>
+</html>
+
+
+
+<html>
+  <body>
+
+
+  </body>
 </html>
