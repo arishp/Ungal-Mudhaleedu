@@ -2,6 +2,73 @@
 <html>
     <head>
         <title>Vaniga Valai</title>
+        <style>
+            body{
+                font-family: Arial, Helvetica, sans-serif;
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+            .chatbot-button{
+                background-color: rgb(25, 135, 84);
+                color: white;
+                padding: 12px 20px;
+                margin: 10px;
+                border: none;
+                border-radius: 10px;
+                font-size: 15px;
+                cursor: pointer;
+            }
+            .chatbot-input{
+                padding: 12px 15px;
+                border-radius: 10px;
+                border-width: 1px;
+                font-size: 15px;
+                flex-grow: 1;
+            }
+            .chatbot-input-container{
+                display: flex;
+                align-items: center;
+                margin-bottom: 60px;
+            }
+            .chat-response-profile{
+                max-width: 40px;
+            }
+            .chatbot-response-user{
+                display: flex;
+                justify-content: flex-end;
+                align-items: start;
+            }
+            .chatbot-response-robot{
+                display: flex;
+                align-items: start;
+            }
+            .chatbot-response-text{
+                background-color: rgb(238, 238, 238);
+                padding: 15px 20px;
+                border-radius: 10px;
+                margin-right: 10px;
+                margin-left: 10px;
+                margin-bottom: 20px;
+                max-width: 300px;
+            }
+            .chat-responses-container{
+                flex-grow: 1;
+                margin-top: 20px;
+                overflow: scroll;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+            .chatbot-container{
+                height: 90vh;
+                display: flex;
+                flex-direction: column;
+            }
+            .main-content{
+                max-width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        </style>
     </head>
     <body>
         <div class="js-container"></div>
@@ -83,28 +150,50 @@
                     setInputText("");
                 }
                 return(
-                    <>
+                    <div className="chatbot-input-container">
                         <input 
+                        className="chatbot-input"
                         onChange={saveInputChange} 
                         placeholder="Enter your query" 
                         value={inputText}
-                        size="30"/>
-                        <button onClick={sendResponse}>Send</button>
-                    </>
+                        size="20"/>
+                        <button className="chatbot-button" onClick={sendResponse}>Send</button>
+                    </div>
                 );
             }
 
             function ChatResponse({sender, message}){
                 return(
-                    <div>
-                        {sender}:{message}
+                    <div className={
+                        sender=="robot"
+                            ?
+                            "chatbot-response-robot"
+                            :"chatbot-response-user"
+                    }>
+                        {sender=="robot" && (
+                            <img className="chat-response-profile" src="images/robot.png"/>
+                        )}
+                        <div className="chatbot-response-text">
+                            {message}
+                        </div>
+                        {sender=="user" && (
+                            <img className="chat-response-profile" src="images/user.png"/>
+                        )}
                     </div>
                 );
             }
 
             function ChatResponses({chatResponses}){
+                const chatResponsesRef = React.useRef(null);
+                React.useEffect(
+                    () => {
+                        const containerElement = chatResponsesRef.current;
+                        containerElement.scrollTop = containerElement.scrollHeight;
+                    },
+                    [chatResponses]
+                )
                 return(
-                    <>
+                    <div className="chat-responses-container" ref={chatResponsesRef}>
                         {
                             chatResponses.map(
                                 (chatResponse) => 
@@ -114,30 +203,30 @@
                                 key={chatResponse.id}/>
                             )
                         }
-                    </>
+                    </div>
                 );
             }
 
             function Chatbot(){
                 const [chatResponses, setChatResponses] = React.useState(
                     [
-                        {sender: "robot", response: "Hello Chatbot...", id:crypto.randomUUID()}
+                        {sender: "robot", response: "Hello from your Chatbot...", id:crypto.randomUUID()}
                     ]
                 );
                 return(
-                    <div>
+                    <div className="chatbot-container">
+                        <ChatResponses
+                         chatResponses={chatResponses}/>
                         <ChatInput
                          chatResponses={chatResponses} 
                          setChatResponses={setChatResponses} />
-                        <ChatResponses
-                         chatResponses={chatResponses}/>
                     </div>
                 );
             }
 
             function MainContent(){
                 return(
-                    <div>
+                    <div className="main-content">
                         <BusinessNewsFeed content="Business News Feed Content..."/>
                         <Chatbot/>
                     </div>
