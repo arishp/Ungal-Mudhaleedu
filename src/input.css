@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@theme {
+  --font-bebas: "Bebas Neue", sans-serif;
+  --text-10xl: 7rem;
+}
