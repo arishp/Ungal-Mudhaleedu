@@ -4,7 +4,7 @@ Vaniga Valai - Business News Portal UI Design
 This is a simplified visual representation of the web page layout. The design is a two-column, responsive layout with a header, a main content area for news, and a separate panel for the chatbot.
 
 +-----------------------------------------------------------------------+
-|  [BizNews]                                  [ Home | Markets | ... ]  |
+|  [NewsPortal]                               [ Home | Markets | ... ]  |
 |  -------------------------------------------------------------------  |
 |                                                                     | |
 |  +---------------------------------+  +-----------------------------+ |
